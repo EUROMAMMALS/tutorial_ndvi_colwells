@@ -17,6 +17,9 @@ knit: (function(input, ...) {
   })
 ---
 
+Calculation of Colwells metrics (Predictibility, Constancy, Contingency) per grid cell using tiled raster datasets. Colwells metrics have been used within Euromammals by Mumme et al. ([2023](https://doi.org/10.1111/gcb.16769)).
+
+
 # Directory Structure 
 
 The repository contains the following files and directories:
