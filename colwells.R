@@ -1,0 +1,162 @@
+### Example: Calculation of Colwells metrics (Predictibility, Constancy, Contingency) ####
+
+# Colwells metrics have been used within Euromammals by Mumme et al. ([2023](https://doi.org/10.1111/gcb.16769)).
+
+### Packages ####
+library(hydrostats)
+library(terra)
+library(tidyr)
+
+### Parameters ####
+
+# Define the necessary parameters
+
+# Colwells variables 
+
+# Check Colwells function for additional information 
+# ?Colwells
+data(Acheron)
+Acheron <- ts.format(Acheron)
+variables <- names(Colwells(Acheron))[3:7]
+# Define Colwell variable (e.g. Constancy), if you are interested in a specific one
+# variables <- c('C','M')
+
+# path 
+path_raw <- './data/0_raw/modis' # CHANGE TO YOUR SOURCE DATA PATH
+path_tiles <-  './data/1_tiles_modis/' # CHANGE ... 
+path_tiles_colwells <- './data/2_tiles_colwells/' # CHANGE ...
+
+# create paths if they do not exist 
+if(!dir.exists(path_tiles)) dir.create(path_tiles)
+if(!dir.exists(path_tiles_colwells)) dir.create(path_tiles_colwells)
+
+# number of tiles 
+NROW <- 10 # define number of tiles 
+NCOL <- 10 # define number of tiles 
+n_tiles <- NROW * NCOL # total number of tiles 
+
+### Loop ####
+
+# list of original rasters 
+rastlist <- list.files(path = path_raw, 
+                       pattern='.tif$', 
+                       all.files=TRUE, 
+                       full.names=TRUE)
+# read rasters 
+r <- terra::rast(rastlist)
+
+# create raster that defines the tile extents 
+y<- terra::rast(ext(r),nrow=NROW,ncol=NCOL,extent=ext(r),crs=crs(r))
+# check the extents 
+e<- terra::getTileExtents(r,y)
+
+# create tiles from original rasters and export
+lapply(1:dim(r)[3],
+       function(x) 
+         terra::makeTiles(r[[x]],y,filename=paste0(path_tiles,names(r)[x],"_",".tif"))
+)
+
+# loop through all raster tiles to calculate colwells
+# i <- 200
+for(i in 1:(n_tiles)){
+  rastlist_tiles <- paste0(path_tiles,paste0(gsub('.tif',paste0('_',i),basename(rastlist)),'.tif'))
+  r <- rast(rastlist_tiles)
+  # plot(r)
+  
+  dates <- rastlist
+  # Extract year and day of the year
+  year <- as.numeric(gsub('_.*','',gsub(".*NDVI_","", rastlist)))
+  day_of_year <- as.numeric(gsub(".tif", "", gsub(".*_","", rastlist)))
+  
+  # Convert to Date
+  dates <- as.Date(paste(year, day_of_year, sep = "-"), format = "%Y-%j",tz='UTC')
+  names(r) <- dates
+  
+  # convert to xy data frame 
+  r_df <- as.data.frame(r, xy = TRUE)
+  if(nrow(r_df) > 0) { 
+    
+    
+    # Convert to long format
+    long <- tidyr::pivot_longer(
+      r_df,
+      cols = starts_with("2000"),  # Specify columns that contain date values
+      names_to = "date",           # New column for dates
+      values_to = "value"          # New column for values
+    )
+    
+    
+    #convert timestamp in data frame 
+    data <- ts.format(long[,c('date','value')],format="%Y-%m-%d")
+    # add coordinates as identifiers 
+    data <- data.frame(cell_coordinates=paste0(long$x,'_',long$y), 
+                       data[,c('Date','Q')])
+    
+    # unique cells to loop through  
+    cells <- unique(data$cell_coordinates)
+    
+    # list to store output of Colwells
+    val_l <- list()
+    
+    # loop 
+    for(j in 1:length(cells)){
+      val_l[[j]] <- tryCatch({
+        # Collwells (change argument settings if necessary) 
+        Colwells(data %>% subset(cell_coordinates == cells[j]), 
+                 boundaries="weighted_log_class_size", 
+                 s=11, 
+                 indices.only=TRUE)
+        
+      }, error = function(e) {
+        # In case of error, return NA and print the error message
+        print(paste("Error at iteration", j, "tile (",i,"):", e$message))
+        print(cells[j])
+        data %>% subset(cell_coordinates == cells[j])
+        data.frame(P=NA,C=NA,M=NA,CP=NA,MP=NA)  # Assign NA when an error occurs
+      })
+      #Error in cut.default(flow.ts.monthly$Q, breaks, right = FALSE, include.lowest = TRUE) : 
+      #  'breaks' are not unique
+      # print(j)
+        
+    }
+    # bind collwells values to data frame 
+    vals <- do.call(rbind.data.frame,val_l)
+    # combine with the coordinate data frame 
+    r_df_vals <- cbind(r_df,vals)
+    
+    # convert back to rasters with matching extent and coordinate reference system as input tiles
+    vars <- lapply(variables, function(x) rast(r_df_vals[,c('x','y',x)], type = "xyz",crs=crs(r),extent=ext(r)))
+    # combine rasters in one spatraster object 
+    rasters <- rast(vars)
+    
+    # plot rasters 
+    # plot(rasters)
+    
+    # save outputs 
+    path_colwells_variables <- paste0(path_tiles_colwells,names(rasters))
+    lapply(path_colwells_variables, function(x) if(!dir.exists(x)) dir.create(x))
+    writeRaster(rasters,filename=paste0(path_tiles_colwells,names(rasters),'/',names(rasters),"_",i,".tif"))
+  }
+}
+
+### Import C,P,M tiles ####
+
+# read tiles per dataset
+r <- lapply(variables, function(x) {
+  tiles <- list.files(path_tiles_colwells,
+                      pattern=paste0('^', x, '_'),
+                      full.names=TRUE,
+                      recursive = T
+  )
+  tiles_per_variable <- terra::vrt(tiles)
+  return(tiles_per_variable)
+})
+
+# stack rasters 
+r <- rast(r)
+names(r) <- variables
+
+# plot rasters 
+# plot(r)
+
+
