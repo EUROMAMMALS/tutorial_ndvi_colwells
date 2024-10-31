@@ -36,7 +36,6 @@ The repository contains the following files and directories:
             ├── MOD13A3_NDVI_2000_092.tif
             ├── MOD13A3_NDVI_2000_122.tif
             └── MOD13A3_NDVI_2000_153.tif
-            └── MOD13A3_NDVI_2000_061.tif
 ```
 
 
