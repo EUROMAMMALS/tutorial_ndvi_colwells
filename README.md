@@ -21,16 +21,6 @@ knit: (function(input, ...) {
 
 The repository contains the following files and directories:
 
-
-
-
-|           |   files/directories |  description          |
-|-----------|---------------------|-----------------------|
-| data      |      0_raw/modis    | Modis sample dataset  |
-| code      |      colwells.R     | R script              |            
-|           |      colwells.Rmd   | R markdown version    |       
-|           |      colwells.html  | html version          |
-
 ```
 . 
 ├── README.md
@@ -48,4 +38,17 @@ The repository contains the following files and directories:
             └── MOD13A3_NDVI_2000_153.tif
             └── MOD13A3_NDVI_2000_061.tif
 ```
-       
+
+
+|           |   files/directories |  description          |
+|-----------|---------------------|-----------------------|
+| data      |      0_raw/modis    | Modis sample dataset  |
+| code      |      colwells.R     | R script              |            
+|           |      colwells.Rmd   | R markdown version    |       
+|           |      colwells.html  | html version          |
+
+
+
+
+
+
