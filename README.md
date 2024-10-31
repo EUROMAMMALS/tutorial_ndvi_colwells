@@ -1,5 +1,3 @@
-### Tutorial: Colwells Metrics per grid cell
-
 ---
 title: "Tutorial to calculate Colwells metrics per grid cell"
 output:
