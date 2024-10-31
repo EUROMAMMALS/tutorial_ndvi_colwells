@@ -1,14 +1,39 @@
 ### Tutorial: Colwells Metrics per grid cell
 
-Tutorial to calculate Colwells metrics per grid cell in R. 
+---
+title: "Tutorial to calculate Colwells metrics per grid cell"
+output:
+  html_document:
+    css: html-md-01.css
+    fig_caption: no
+    number_sections: no
+    toc: no
+    toc_float: false
+    collapsed: no
+knit: (function(input, ...) {
+    rmarkdown::render(
+      input,
+      output_file = 'index.html',
+      envir = globalenv()
+    )
+  })
+---
 
-|           |   directory         |  description          |
+# Directory Structure 
+
+The repository contains the following files and directories:
+
+
+
+
+|           |   files/directories |  description          |
 |-----------|---------------------|-----------------------|
 | data      |      0_raw/modis    | Modis sample dataset  |
 | code      |      colwells.R     | R script              |            
 |           |      colwells.Rmd   | R markdown version    |       
 |           |      colwells.html  | html version          |
 
+```
 . 
 ├── README.md
 ├── tutorial_ndvi_colwells.Rproj
@@ -24,4 +49,5 @@ Tutorial to calculate Colwells metrics per grid cell in R.
             ├── MOD13A3_NDVI_2000_122.tif
             └── MOD13A3_NDVI_2000_153.tif
             └── MOD13A3_NDVI_2000_061.tif
+```
        
