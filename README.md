@@ -17,8 +17,9 @@ knit: (function(input, ...) {
   })
 ---
 
-Calculation of Colwells metrics (Predictibility, Constancy, Contingency) per grid cell using tiled raster datasets. Colwells metrics have been used within Euromammals by Mumme et al. ([2023](https://doi.org/10.1111/gcb.16769)).
+# Introduction 
 
+Calculation of Colwells metrics (Predictibility, Constancy, Contingency) per grid cell using tiled raster datasets. In the example we use MODIS NDVI. Colwells metrics have been used within Euromammals by Mumme et al. ([2023](https://doi.org/10.1111/gcb.16769)).
 
 # Directory Structure 
 
@@ -44,7 +45,7 @@ The repository contains the following files and directories:
 
 |           |   files/directories |  description          |
 |-----------|---------------------|-----------------------|
-| data      |      [0_raw/modis/](https://github.com/EUROMAMMALS/tutorial_ndvi_colwells/blob/main/data/0_raw/modis/)    | Modis sample dataset  |
+| data      |      [0_raw/modis/](https://github.com/EUROMAMMALS/tutorial_ndvi_colwells/blob/main/data/0_raw/modis/)    | MODIS NDVI sample dataset  |
 | code      |      [colwells.R](https://github.com/EUROMAMMALS/tutorial_ndvi_colwells/blob/main/code/colwells.R)    | R script              |            
 |           |      [colwells.Rmd](https://github.com/EUROMAMMALS/tutorial_ndvi_colwells/blob/main/code/colwells.Rmd)   | R markdown version    |       
 |           |      [colwells.html](https://github.com/EUROMAMMALS/tutorial_ndvi_colwells/blob/main/code/colwells.html)   | html version          |
