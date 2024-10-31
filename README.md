@@ -46,7 +46,7 @@ The repository contains the following files and directories:
 |           |   files/directories |  description          |
 |-----------|---------------------|-----------------------|
 | data      |      [0_raw/modis/](https://github.com/EUROMAMMALS/tutorial_ndvi_colwells/blob/main/data/0_raw/modis/)    | MODIS NDVI sample dataset  |
-| code      |      [colwells.R](https://github.com/EUROMAMMALS/tutorial_ndvi_colwells/blob/main/code/colwells.R)    | R script              |            
+| code      |      [colwells.R](https://github.com/EUROMAMMALS/tutorial_ndvi_colwells/blob/main/code/colwells.R)    | R script with calculations of colwell indices per grid cell |           
 |           |      [colwells.Rmd](https://github.com/EUROMAMMALS/tutorial_ndvi_colwells/blob/main/code/colwells.Rmd)   | R markdown version    |       
 |           |      [colwells.html](https://github.com/EUROMAMMALS/tutorial_ndvi_colwells/blob/main/code/colwells.html)   | html version          |
 
