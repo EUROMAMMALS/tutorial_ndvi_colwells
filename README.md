@@ -42,7 +42,7 @@ The repository contains the following files and directories:
 |           |   files/directories |  description          |
 |-----------|---------------------|-----------------------|
 | data      |      0_raw/modis    | Modis sample dataset  |
-| code      |      (colwells.R)[https://github.com/EUROMAMMALS/tutorial_ndvi_colwells/blob/main/code/colwells.R]     | R script              |            
+| code      |      [colwells.R](https://github.com/EUROMAMMALS/tutorial_ndvi_colwells/blob/main/code/colwells.R)    | R script              |            
 |           |      colwells.Rmd   | R markdown version    |       
 |           |      colwells.html  | html version          |
 
